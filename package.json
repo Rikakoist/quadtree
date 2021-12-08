@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "element-resize-detector": "^1.2.3",
     "element-ui": "^2.15.6",
     "ol": "^6.9.0",
     "ol-ext": "^3.2.16",

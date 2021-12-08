@@ -4,6 +4,9 @@
     <OSMLayerSwitcher ref="OSMLayerSwitcher" />
     <OSMScaleLine ref="OSMScaleLine" />
     <OSMMousePosition ref="OSMMousePosition" />
+    <OSMNotification ref="OSMNotification" />
+    <OSMDrawPanel ref="OSMDrawPanel" />
+    <DrawFeature ref="DrawFeature" />
     <div id="zoomInfo"></div>
   </div>
 </template>
@@ -15,6 +18,9 @@ import OpenLayersMap from "@mapArea/OpenLayersMap.vue";
 import OSMLayerSwitcher from "@mapControls/OSMLayerSwitcher.vue";
 import OSMScaleLine from "@mapControls/OSMScaleLine.vue";
 import OSMMousePosition from "@mapControls/OSMMousePosition.vue";
+import OSMNotification from "@mapControls/OSMNotification.vue";
+import OSMDrawPanel from "@mapControls/OSMDrawPanel.vue";
+import DrawFeature from "@mapControls/DrawFeature.vue";
 
 window.openLayersMap = undefined;
 
@@ -25,6 +31,9 @@ export default {
     OSMLayerSwitcher,
     OSMScaleLine,
     OSMMousePosition,
+    OSMNotification,
+    OSMDrawPanel,
+    DrawFeature,
   },
   data() {
     return {};

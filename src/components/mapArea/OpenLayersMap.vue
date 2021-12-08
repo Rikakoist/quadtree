@@ -9,6 +9,7 @@ import "ol/ol.css";
 import { toLonLat } from "ol/proj";
 import { EventBus } from "@js/event-bus";
 import initMap from "@js/initMap";
+import elementResizeDetectorMaker from "element-resize-detector";
 
 export default {
   name: "MapArea.OSM",
@@ -47,7 +48,7 @@ export default {
     },
     onMapInit() {
       EventBus.$on("mapInitializedMsg", () => {
-        window.openLayersMap &&
+        if (window.openLayersMap) {
           window.openLayersMap.on("moveend", () => {
             let view = window.openLayersMap.getView();
             let zoom = view.getZoom();
@@ -61,13 +62,12 @@ export default {
             ).innerHTML = `Zoom level = ${zoom}</br>Resolution = ${resolution}</br>Center: ${toLonLat(
               center
             )}</br>Rotation: ${rotation}`;
-            //保存移动后的视角位置、缩放、旋转
-            // this.$store.commit("OSMView/setOSMViewParams", {
-            //   center: toLonLat(center),
-            //   zoom: zoom,
-            //   rotation: rotation,
-            // });
           });
+          const erd = elementResizeDetectorMaker();
+          erd.listenTo(document.getElementById("OpenLayersMap"), function () {
+            window.openLayersMap.updateSize();
+          });
+        }
       });
     },
   },
