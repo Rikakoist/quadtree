@@ -17,7 +17,17 @@
           v-show="drawPanelContentVisible"
           style="padding: 20px"
         >
-          <DrawFeatureGUI ref="DrawFeatureGUI" />
+          <el-row> <DrawFeatureGUI ref="DrawFeatureGUI" /> </el-row>
+          <br />
+          <el-row>
+            <el-button
+              type="primary"
+              v-on:click="execQuadTree()"
+              :disabled="drawing"
+            >
+              生成四叉树
+            </el-button>
+          </el-row>
         </div>
       </el-collapse-transition>
     </el-card>
@@ -25,8 +35,9 @@
 </template>
 
 <script>
-import { EventBus } from "@js/event-bus.js";
+import { EventBus } from "@js/event-bus";
 import DrawFeatureGUI from "@mapControls/DrawFeatureGUI.vue";
+import generateQuadTree from "@js/generateQuadTree";
 
 export default {
   name: "OSMControls.DrawPanel",
@@ -36,11 +47,14 @@ export default {
   data() {
     return {
       drawPanelContentVisible: true, //下拉菜单是否可见
+      drawing: false,
     };
   },
   beforeCreate() {},
   created() {
-    this.endDraw();
+    this.onWarnMsg();
+    this.onDrawing();
+    this.onDrawEnd();
   },
   beforeMount() {},
   mounted() {},
@@ -63,9 +77,26 @@ export default {
     setDrawPanelVisibility() {
       this.drawPanelContentVisible = !this.drawPanelContentVisible;
     },
-    endDraw() {
+    onDrawing() {
+      EventBus.$on("drawFeatureMsg", () => {
+        this.drawing = true;
+      });
+    },
+    onDrawEnd() {
       EventBus.$on("drawFeatureFinishedMsg", () => {
         this.drawPanelContentVisible = true;
+        this.drawing = false;
+      });
+      EventBus.$on("drawFeatureMandatoryStopMsg", () => {
+        this.drawing = false;
+      });
+    },
+    execQuadTree() {
+      generateQuadTree(window.drawLayer);
+    },
+    onWarnMsg() {
+      EventBus.$on("warnMsg", (msgData) => {
+        this.$notify(msgData);
       });
     },
   },

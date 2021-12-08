@@ -65,7 +65,7 @@ export default {
 /*覆盖layerswitcher样式*/
 .ol-control.ol-layerswitcher {
   left: 1em;
-  top: 6em;
+  top: 10em;
   right: auto;
   bottom: auto;
   overflow: hidden;

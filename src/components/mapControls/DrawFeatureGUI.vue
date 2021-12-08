@@ -2,7 +2,7 @@
   <el-col :span="24">
     <el-row style="text-align: left">
       <b>{{ title }}：{{ drawType }}</b>
-      <el-select v-model="selectedDrawType" :disabled="drawing">
+      <el-select v-model="selectedDrawType" :disabled="drawing" size="medium">
         <el-option
           v-for="item in drawOptions"
           :key="item"
