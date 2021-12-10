@@ -18,6 +18,7 @@
           style="padding: 20px"
         >
           <el-row> <DrawFeatureGUI ref="DrawFeatureGUI" /> </el-row>
+          <el-row><InputNumberGUI ref="InputNumberGUI" /></el-row>
           <br />
           <el-row>
             <el-button
@@ -37,12 +38,14 @@
 <script>
 import { EventBus } from "@js/event-bus";
 import DrawFeatureGUI from "@mapControls/DrawFeatureGUI.vue";
+import InputNumberGUI from "@mapControls/InputNumberGUI.vue";
 import generateQuadTree from "@js/generateQuadTree";
 
 export default {
   name: "OSMControls.DrawPanel",
   components: {
     DrawFeatureGUI,
+    InputNumberGUI,
   },
   data() {
     return {
@@ -92,6 +95,8 @@ export default {
       });
     },
     execQuadTree() {
+      //console.dir(this.$refs["InputNumberGUI"].value);
+      window.quadTreeMaxLevel = this.$refs["InputNumberGUI"].value;
       generateQuadTree(window.drawLayer);
     },
     onWarnMsg() {

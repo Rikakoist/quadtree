@@ -10,16 +10,23 @@ import { toLonLat } from "ol/proj";
 import { EventBus } from "@js/event-bus";
 import initMap from "@js/initMap";
 import elementResizeDetectorMaker from "element-resize-detector";
+import FeaturePropOverlay from "@js/featurePropOverlay";
+
+let overlay = new FeaturePropOverlay({});
 
 export default {
   name: "MapArea.OSM",
   components: {},
   data() {
-    return {};
+    return {
+      init: false,
+    };
   },
   created() {
     this.animateViewToArea();
     this.fitViewToArea();
+    this.onDrawing();
+    this.onDrawEnd();
   },
   mounted() {
     this.onMapInit();
@@ -30,7 +37,9 @@ export default {
   updated() {},
   activated() {},
   deactivated() {},
-  beforeDestroy() {},
+  beforeDestroy() {
+    this.mapEvents(false);
+  },
   destroyed() {},
   errorCaptured() {},
   methods: {
@@ -68,7 +77,50 @@ export default {
             window.openLayersMap.updateSize();
           });
         }
+        if (!this.init) {
+          overlay.init();
+          this.init = false;
+        }
+        this.mapEvents(true);
       });
+    },
+    onDrawing() {
+      EventBus.$on("drawFeatureMsg", () => {
+        this.mapEvents(false);
+      });
+    },
+    onDrawEnd() {
+      EventBus.$on("drawFeatureFinishedMsg", () => {
+        this.mapEvents(true);
+      });
+      EventBus.$on("drawFeatureMandatoryStopMsg", () => {
+        this.mapEvents(true);
+      });
+    },
+    mapEvents(enable) {
+      if (enable) {
+        //console.warn("启用选择");
+        window.openLayersMap.un("pointermove", this.judgePointer);
+        window.openLayersMap.un("click", this.showFeatureProp);
+        overlay.removeOverlay();
+        overlay.addOverlay();
+        window.openLayersMap.on("pointermove", this.judgePointer);
+        window.openLayersMap.on("click", this.showFeatureProp);
+      } else {
+        //console.warn("禁用选择");
+        window.openLayersMap.un("pointermove", this.judgePointer);
+        window.openLayersMap.un("click", this.showFeatureProp);
+        overlay.removeOverlay();
+      }
+    },
+    //判断光标位置是否有要素
+    judgePointer(e) {
+      let hit = window.openLayersMap.hasFeatureAtPixel(e.pixel);
+      window.openLayersMap.getViewport().style.cursor = hit ? "pointer" : "";
+    },
+    //显示要素属性
+    showFeatureProp(e) {
+      overlay.showFeatureProp(e);
     },
   },
   watch: {},

@@ -1,6 +1,6 @@
 import Overlay from "ol/Overlay";
-import { filterAttribute } from "@common/filterAttribute";
-import { objectAttrToTable } from "@common/objAttrToTable";
+import { objectAttrToTable } from "@js/objAttrToTable";
+import { filterAttribute } from "@js/filterAttribute";
 
 class FeaturePropOverlay {
   popupContent;
@@ -35,7 +35,7 @@ class FeaturePropOverlay {
   }
 
   showFeatureProp(e) {
-    console.log(e.coordinate);
+    //console.log(e.coordinate);
     let feature = window.openLayersMap.forEachFeatureAtPixel(e.pixel, function(
       feature,
       // eslint-disable-next-line no-unused-vars
@@ -44,7 +44,7 @@ class FeaturePropOverlay {
       return feature;
     });
     if (feature) {
-      let attr = filterAttribute(feature.getProperties());
+      let attr =  filterAttribute(feature.getProperties());
       //console.dir(attr);
       this.popupContent.innerHTML = "";
       this.popupContent.appendChild(objectAttrToTable(attr));
