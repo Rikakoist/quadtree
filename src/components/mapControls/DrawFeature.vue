@@ -1,3 +1,4 @@
+//绘制控件
 <template>
   <el-container
     id="drawFeature"
@@ -159,15 +160,16 @@ export default {
 };
 </script>
 <style>
+/* 绘制样式 */
 #drawFeature {
   background-color: transparent;
-  /*box-shadow: 0px 1px 4px rgb(0 0 0 / 30%);*/
   position: absolute;
-  right: 50vh;
-  transform: translateX(-50%);
+  right: 50%;
+  transform: translate(50%);
   bottom: 1em;
 }
 
+/* 不可见状态 */
 .drawPanelInvisible {
   display: none;
 }
