@@ -1,5 +1,11 @@
 # quadtree
 
+Implementation of Quadtree(Z-order) geocoding using OpenLayers.
+
+Draw points, linestrings, polygons and circles, then generate Quadtree(Z-order) grid visually.
+
+Simple as naïve.
+
 ## Project setup
 ```
 npm install
